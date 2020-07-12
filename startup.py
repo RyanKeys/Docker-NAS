@@ -8,5 +8,6 @@ if 'config.json' not in os.listdir('.'):
     config.close()
 
 if __name__ == "__main__":
-    os.system("docker build -t flask-image .")
-    os.system("docker run -p 5000:5000 --rm --name flask-container flask-image")
+    os.system("docker build -t ryankeys/docker-nas:latest .")
+    os.system(
+        "docker run -p 5000:5000 --rm --name flask-container ryankeys/docker-nas:latest")
