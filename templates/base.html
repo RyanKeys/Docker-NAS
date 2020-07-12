@@ -1,0 +1,30 @@
+<html>
+  <body>
+    <div class="title-card">
+    <a href="{{url_for('index')}}"
+      ><h1 style="display: flex; justify-content: center;">Docker-NAS</h1></a
+    >
+    {% if session["username"] %}
+    <h2 style="display: flex; justify-content: center;">
+      Welcome {{ session["username"] }}!
+    </h2>
+    <span class="banner" ">
+    <a href="{{url_for('upload_image')}}"
+      ><h3 style="display: inline;">Upload</h3></a
+    
+    >
+    <a href="{{url_for('logout')}}"><h3 style="display: inline;">Logout</h3></a>
+    {% else %}
+      <a href="{{url_for('login')}}"><h3 style="display: inline;">Login</h3></a>
+    {% endif %}
+    
+    <a href="{{url_for('readme')}}"><h3 style="display: inline;">Read Me</h3></a>
+     
+    </span>
+    <div class="container">
+      {% if session["username"] %}
+      {% block content%} {% endblock %}
+      {% endif %}
+    </div>
+  </body>
+</html>

@@ -1,0 +1,12 @@
+{% extends 'base.html' %} {% block content%} {% for image in data.images %}{%if
+".md" not in image%} {% if session['username'] %} {{data}}
+<a href="{{session['username']}}/{{image}}">
+  <img
+    src="/static/uploads/{{image}}"
+    alt="{{image}}"
+    style="max-width: 25%;"
+  />
+</a>
+{% else %}
+<h1>You have no photos to show</h1>
+{% endif %} {% endif %} {% endfor %} {% endblock %}
