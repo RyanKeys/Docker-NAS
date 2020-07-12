@@ -68,9 +68,7 @@ def upload_image():
         if request.files:
             image = request.files["image"]
             username = session['username']
-            imagename = username + "/" + image.filename
-            if username not in get_all_dirs(IMAGE_FOLDER):
-                os.mkdir(os.path.join(IMAGE_FOLDER, username))
+            imagename = image.filename
 
             if imagename == '':
                 return render_template('partials/upload-image.html', error="Please enter a file to upload")
