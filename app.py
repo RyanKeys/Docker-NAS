@@ -49,11 +49,10 @@ def index():
 def login():
     '''Shows login form and handles creating user.'''
     if request.method == 'POST':
-        if request.form['username'] == PASSWORD:
-            session['username'] = request.form['username']
+        if request.form['password'] == PASSWORD:
+            session["username"] = "User"
             return redirect(url_for('index')
                             )
-
         return render_template('partials/login.html', error="Invalid Password")
 
     return render_template('partials/login.html')
@@ -89,7 +88,7 @@ def upload_image():
 
 
 @app.route("/delete/<image>", methods=["GET", "POST"])
-def delete_image(username, image):
+def delete_image(image):
     if request.method == "POST":
         if image in os.listdir(IMAGE_FOLDER):
             os.remove(os.path.join(IMAGE_FOLDER, image))
