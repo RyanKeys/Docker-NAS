@@ -2,12 +2,17 @@ import os
 from flask import Flask, request, redirect, url_for, render_template, session
 from markupsafe import escape
 from werkzeug.utils import secure_filename
-
+import json
 ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
 IMAGE_FOLDER = os.getcwd() + "/static/uploads"
-PASSWORD = "Ryan"
 app = Flask(__name__)
+
+# CHANGE THESE DURING PRODUCTION
+json_data = open('config.json')
 app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
+PASSWORD = json.load(json_data)["password"]
+
+
 app.config["IMAGE_UPLOADS"] = IMAGE_FOLDER
 
 # Used get_all_files() to find file to delete in the index ("/") route.
@@ -67,7 +72,6 @@ def upload_image():
     if request.method == "POST":
         if request.files:
             image = request.files["image"]
-            username = session['username']
             imagename = image.filename
 
             if imagename == '':
@@ -104,4 +108,4 @@ def show_image(image):
 
 @app.route("/README.html")
 def readme():
-    return render_template('partials/README.html')
+    return render_template('partials/readme.html')
