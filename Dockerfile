@@ -8,6 +8,5 @@ WORKDIR /app
 
 ENV FLASK_APP=app.py
 ENV FLASK_ENV=development
-RUN python3 first_time_setup.py
 EXPOSE 5000
 CMD ["flask", "run", "--host=0.0.0.0"]
