@@ -66,26 +66,37 @@ def logout():
     return redirect(url_for('login'))
 
 
-@app.route("/upload-image", methods=["GET", "POST"])
+@app.route("/upload", methods=["GET", "POST"])
 def upload_image():
     '''Shows image upload form, and posts selected image to the uploads folder.'''
     if request.method == "POST":
         if request.files:
-            image = request.files["image"]
-            imagename = image.filename
+            f = request.files["file"]
+            filename = f.filename
 
-            if imagename == '':
-                return render_template('partials/upload-image.html', error="Please enter a file to upload")
+            if filename == '':
+                return render_template('partials/upload.html', error="Please enter a file to upload")
 
-            if imagename not in get_all_files(IMAGE_FOLDER):
-                image.save(os.path.join(
-                    app.config["IMAGE_UPLOADS"], imagename))
-                return redirect(imagename)
+            if filename not in get_all_files(IMAGE_FOLDER):
+                f.save(os.path.join(
+                    app.config["IMAGE_UPLOADS"], filename))
+                return redirect(filename)
 
-            if imagename in get_all_files(IMAGE_FOLDER):
-                return render_template('partials/upload image.html', error="File already exists")
+            if filename in get_all_files(IMAGE_FOLDER):
+                return render_template('partials/upload.html', error="File already exists")
 
-    return render_template("partials/upload-image.html")
+    return render_template('/partials/upload.html')
+
+
+@app.route("/download/<filename>", methods=["GET", "POST"])
+def download_file(filename):
+    if request.method == "POST":
+        try:
+            return send_from_directory(IMAGE_FOLDER, filename, as_attachment=True)
+        except FileNotFoundError:
+            abort(404)
+
+    return render_template("partials/download-confirmation.html", filename=filename)
 
 
 @app.route("/delete/<image>", methods=["GET", "POST"])
@@ -101,20 +112,11 @@ def delete_image(image):
     return render_template('partials/delete-confirmation.html', image=image)
 
 
-@app.route("/<image>")
-def show_image(image):
-    return render_template('partials/image-card.html', image=image)
+@app.route("/<filename>")
+def show_file(filename):
+    return render_template('partials/image-card.html', filename=filename)
 
 
 @app.route("/README.html")
 def readme():
     return render_template('partials/readme.html')
-
-
-@app.route("/download/<path:path>")
-def dowload_files(path):
-    print(path)
-    try:
-        return send_from_directory(IMAGE_FOLDER, filename=path, as_attachment=True)
-    except FileNotFoundError:
-        abort(404)

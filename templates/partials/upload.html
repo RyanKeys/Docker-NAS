@@ -3,8 +3,8 @@
 {% if error %}
 <h3>{{error}}</h3>
 {% endif %}
-<form action="/upload-image" method="POST" enctype="multipart/form-data">
-  <input type="file" name="image" id="image" />
+<form action="/upload" method="POST" enctype="multipart/form-data">
+  <input type="file" name="file" id="file" />
   <button type="submit">Upload</button>
 </form>
 <a href="/">Home</a>

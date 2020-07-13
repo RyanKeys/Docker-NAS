@@ -1,4 +1,18 @@
 {% extends 'base.html' %} {% block content %}
-<img src="/static/uploads/{{image}}" />
-<a href="/delete/{{image}}">Delete</a>
+<div class="container">
+  <a href="/download/{{filename}}" style="padding: 5px;"
+    ><img
+      src="/static/uploads/{{filename}}"
+      style="
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        height: 65%;
+      "
+  /></a>
+  <div class="card-footer" style="text-align: center;">
+    <a href="/download/{{filename}}" style="padding: 1px;">Click to Download</a>
+    <a href="/delete/{{filename}}" style="padding: 1px;">Delete</a>
+  </div>
+</div>
 {% endblock %}
