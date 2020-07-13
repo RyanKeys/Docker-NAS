@@ -1,9 +1,9 @@
-{% extends 'base.html' %} {% block content%} {% for image in images %}{%if ".md"
-not in image%} {% if session['username']%}
-<a href="{{image}}">
+{% extends 'base.html' %} {% block content%} {% for file in files %}{%if ".md"
+not in file%} {% if session['username']%}
+<a href="{{file}}">
   <img
-    src="/static/uploads/{{image}}"
-    alt="{{image}}"
+    src="/static/uploads/{{file}}"
+    alt="{{file}}"
     style="max-width: 15%;"
   />
 </a>

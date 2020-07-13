@@ -43,7 +43,7 @@ def index():
     if not session:
         return redirect(url_for('login'))
     '''Home Page. Should show all uploaded files.'''
-    return render_template('partials/index.html', images=get_all_files(IMAGE_FOLDER))
+    return render_template('partials/index.html', files=get_all_files(IMAGE_FOLDER))
 
 
 @app.route("/login", methods=['GET', 'POST'])
@@ -67,7 +67,9 @@ def logout():
 
 
 @app.route("/upload", methods=["GET", "POST"])
-def upload_image():
+def upload():
+    if not session:
+        return redirect(url_for('login'))
     '''Shows image upload form, and posts selected image to the uploads folder.'''
     if request.method == "POST":
         if request.files:
@@ -90,6 +92,8 @@ def upload_image():
 
 @app.route("/download/<filename>", methods=["GET", "POST"])
 def download_file(filename):
+    if not session:
+        return redirect(url_for('login'))
     if request.method == "POST":
         try:
             return send_from_directory(IMAGE_FOLDER, filename, as_attachment=True)
@@ -100,23 +104,29 @@ def download_file(filename):
 
 
 @app.route("/delete/<image>", methods=["GET", "POST"])
-def delete_image(image):
+def delete_file(filename):
+    if not session:
+        return redirect(url_for('login'))
     if request.method == "POST":
-        if image in os.listdir(IMAGE_FOLDER):
-            os.remove(os.path.join(IMAGE_FOLDER, image))
+        if filename in os.listdir(IMAGE_FOLDER):
+            os.remove(os.path.join(IMAGE_FOLDER, filename))
             return redirect(url_for('index'))
 
-        if image not in os.listdir(IMAGE_FOLDER):
+        if filename not in os.listdir(IMAGE_FOLDER):
             return render_template('partials/error-page.html', error="File not found")
 
-    return render_template('partials/delete-confirmation.html', image=image)
+    return render_template('partials/delete-confirmation.html', filename=filename)
 
 
 @app.route("/<filename>")
 def show_file(filename):
+    if not session:
+        return redirect(url_for('login'))
     return render_template('partials/image-card.html', filename=filename)
 
 
 @app.route("/README.html")
 def readme():
+    if not session:
+        return redirect(url_for('login'))
     return render_template('partials/readme.html')
