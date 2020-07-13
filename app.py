@@ -1,5 +1,6 @@
 import os
-from flask import Flask, request, redirect, url_for, render_template, session
+from flask import (Flask, request, redirect, url_for,
+                   render_template, session, send_from_directory, abort)
 from markupsafe import escape
 from werkzeug.utils import secure_filename
 import json
@@ -108,3 +109,12 @@ def show_image(image):
 @app.route("/README.html")
 def readme():
     return render_template('partials/readme.html')
+
+
+@app.route("/download/<path:path>")
+def dowload_files(path):
+    print(path)
+    try:
+        return send_from_directory(IMAGE_FOLDER, filename=path, as_attachment=True)
+    except FileNotFoundError:
+        abort(404)
