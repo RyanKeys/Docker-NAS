@@ -18,7 +18,7 @@ db = client.usersdb
 # CHANGE THESE DURING PRODUCTION
 json_data = open('config.json')
 app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
-PASSWORD = json.load(json_data)["password"]
+PASSWORD = "Test"
 
 
 app.config["IMAGE_UPLOADS"] = IMAGE_FOLDER
