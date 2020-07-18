@@ -1,13 +1,20 @@
 import os
+from pymongo import MongoClient
 from flask import (Flask, request, redirect, url_for,
                    render_template, session, send_from_directory, abort)
 from markupsafe import escape
 from werkzeug.utils import secure_filename
 import json
+
 ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
 IMAGE_FOLDER = os.getcwd() + "/static/uploads"
+
 app = Flask(__name__)
 
+client = MongoClient(
+    os.environ['DB_PORT_27017_TCP_ADDR'],
+    27017)
+db = client.usersdb
 # CHANGE THESE DURING PRODUCTION
 json_data = open('config.json')
 app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
@@ -79,13 +86,13 @@ def upload():
             if filename == '':
                 return render_template('partials/upload.html', error="Please enter a file to upload")
 
+            if filename in get_all_files(IMAGE_FOLDER):
+                return render_template('partials/upload.html', error="File already exists")
+
             if filename not in get_all_files(IMAGE_FOLDER):
                 f.save(os.path.join(
                     app.config["IMAGE_UPLOADS"], filename))
                 return redirect(filename)
-
-            if filename in get_all_files(IMAGE_FOLDER):
-                return render_template('partials/upload.html', error="File already exists")
 
     return render_template('/partials/upload.html')
 
@@ -130,3 +137,6 @@ def readme():
     if not session:
         return redirect(url_for('login'))
     return render_template('partials/readme.html')
+
+if __name__ == "__main__":
+    app.run(host='0.0.0.0', debug=True)

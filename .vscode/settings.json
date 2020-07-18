@@ -1,4 +1,4 @@
 {
     "git.ignoreLimitWarning": true,
-    "python.pythonPath": "/usr/local/bin/python3"
+    "python.pythonPath": "/Users/ryankeys/Code/docker-nas/env/bin/python3.7"
 }
